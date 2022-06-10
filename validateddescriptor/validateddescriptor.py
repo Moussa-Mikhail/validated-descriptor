@@ -56,7 +56,7 @@ def type_check_factory(type_: type) -> ValidatorFunction:
         if not isinstance(value, type_):
 
             raise TypeError(
-                f"{descriptor.public_name} must be of type {type_} not {type(value)}"
+                f"{descriptor.public_name} must be of type {type_.__name__} not {type(value).__name__}"
             )
 
     return type_check
