@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "Class used as an alternative to setter methods that validate inputs."
 authors = ["Moussa Mikhail <moussamikhail56@gmail.com>"]
 license = "MIT"
+packages = [
+	{ include = "validateddescriptor.py" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
