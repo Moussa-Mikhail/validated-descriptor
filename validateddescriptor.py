@@ -3,24 +3,21 @@
 
 from __future__ import annotations
 
-from numbers import Real
-from typing import Any, Callable, Iterable, Type
+from typing import Any, Callable
 
 ValidatorFunction = Callable[["ValidatedDescriptor", Any], None]
 
 
 class ValidatedDescriptor:
     """Class used as an alternative to setter methods that validate inputs.
-    The constructor takes an iterable of functions used to validate the input value.
+    The constructor takes a list of functions used to validate the input value.
     A validation function should raise an exception
     if the input value is not valid and do nothing if it is.
     """
 
-    validation_funcs: set[ValidatorFunction]
+    def __init__(self, validation_funcs: list[ValidatorFunction]):
 
-    def __init__(self, validation_funcs: Iterable[ValidatorFunction]):
-
-        self.validation_funcs = set(validation_funcs)
+        self.validation_funcs = validation_funcs
 
     def validate(self, value: Any) -> None:
         """This function passes the input value to each of the validation functions."""
@@ -53,45 +50,38 @@ class ValidatedDescriptor:
             raise err
 
 
-def type_check_factory(type_: Type):
+def type_check_factory(type_: type) -> ValidatorFunction:
     def type_check(descriptor: ValidatedDescriptor, value: Any) -> None:
 
         if not isinstance(value, type_):
 
             raise TypeError(
-                f"{descriptor.public_name} must be a {type_} not {type(value)}"
+                f"{descriptor.public_name} must be of type {type_} not {type(value)}"
             )
 
     return type_check
 
 
+def value_check_factory(
+    check_func: Callable[[Any], bool], prop: str
+) -> ValidatorFunction:
+    def value_check(descriptor: ValidatedDescriptor, value: Any) -> None:
+
+        if not check_func(value):
+
+            raise ValueError(f"{descriptor.public_name} must be {prop}")
+
+    return value_check
+
+
 is_integer = type_check_factory(int)
 
-is_real = type_check_factory(Real)
+is_float = type_check_factory(float)
 
 is_string = type_check_factory(str)
 
 is_bool = type_check_factory(bool)
 
+is_positive = value_check_factory(lambda x: x > 0, "positive")
 
-def is_positive(descriptor: ValidatedDescriptor, value: Any) -> None:
-
-    is_real(descriptor, value)
-
-    if value <= 0:
-        raise ValueError(f"{descriptor.public_name} must be positive")
-
-
-def is_non_negative(descriptor: ValidatedDescriptor, value: Any) -> None:
-
-    is_real(descriptor, value)
-
-    if value < 0:
-        raise ValueError(f"{descriptor.public_name} must be non-negative")
-
-
-def is_non_empty(descriptor: ValidatedDescriptor, value: Any) -> None:
-    """Meant to be used along with a container validation function"""
-
-    if not value:
-        raise ValueError(f"{descriptor.public_name} must not be empty")
+is_non_negative = value_check_factory(lambda x: x >= 0, "non-negative")
