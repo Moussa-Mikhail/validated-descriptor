@@ -5,7 +5,7 @@ description = "Class used as an alternative to setter methods that validate inpu
 authors = ["Moussa Mikhail <moussamikhail56@gmail.com>"]
 license = "MIT"
 packages = [
-	{ include = "validateddescriptor.py" }
+	{ include = "validateddescriptor" }
 ]
 
 [tool.poetry.dependencies]
