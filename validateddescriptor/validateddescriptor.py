@@ -12,7 +12,7 @@ ValidatorFunction = Callable[["ValidatedDescriptor", Any], None]
 # types acceptable
 Instanceable = type | UnionType | tuple[type | UnionType | tuple[Any, ...], ...]
 
-T = TypeVar("T", bound=Instanceable)
+T = TypeVar("T")
 
 
 class ValidatedDescriptor(Generic[T]):
