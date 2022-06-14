@@ -46,7 +46,9 @@ class ValidatedDescriptor(Generic[T]):
         self.type_name = str(type_)
 
     def validate(self, value: Any) -> None:
-        """This function passes the input value to each of the validation functions."""
+        """This function passes the input value to the type check
+        and then each of the validation functions.
+        """
 
         self.type_check(value)
 
