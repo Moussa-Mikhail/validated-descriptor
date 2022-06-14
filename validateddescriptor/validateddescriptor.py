@@ -25,11 +25,11 @@ class ValidatedDescriptor(Generic[T]):
 
     def __init__(
         self,
-        validation_funcs: list[ValidatorFunction],
-        type_: Instanceable,
+        validation_funcs: list[ValidatorFunction] | None = None,
+        type_: Instanceable = object,
     ):
 
-        self.validation_funcs = validation_funcs
+        self.validation_funcs = validation_funcs or []
 
         try:
 
