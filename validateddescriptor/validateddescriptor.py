@@ -7,12 +7,12 @@ from types import UnionType
 
 from typing import Any, Callable, Generic, TypeVar
 
-T = TypeVar("T")
-
 ValidatorFunction = Callable[["ValidatedDescriptor", Any], None]
 
 # types acceptable
 Instanceable = type | UnionType | tuple[type | UnionType | tuple[Any, ...], ...]
+
+T = TypeVar("T", bound=Instanceable)
 
 
 class ValidatedDescriptor(Generic[T]):
@@ -33,7 +33,7 @@ class ValidatedDescriptor(Generic[T]):
 
         try:
 
-            isinstance(0, type_)
+            isinstance(None, type_)
 
         except TypeError as err:
 
