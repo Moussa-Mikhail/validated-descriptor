@@ -10,7 +10,7 @@ from typing import Any, Callable, Generic, TypeVar
 ValidatorFunction = Callable[["ValidatedDescriptor", Any], None]
 
 # types acceptable
-Instanceable = type | UnionType | tuple[type | UnionType | tuple[Any, ...], ...]
+IsInstanceable = type | UnionType | tuple[type | UnionType | tuple[Any, ...], ...]
 
 T = TypeVar("T")
 
@@ -26,7 +26,7 @@ class ValidatedDescriptor(Generic[T]):
     def __init__(
         self,
         validation_funcs: list[ValidatorFunction] | None = None,
-        type_: Instanceable = object,
+        type_: IsInstanceable = object,
     ):
 
         self.validation_funcs = validation_funcs or []
