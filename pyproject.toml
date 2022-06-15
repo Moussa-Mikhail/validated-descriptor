@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "validateddescriptor"
-version = "2.0.0"
+version = "2.0.1"
 description = "Class used as an alternative to setter methods that validate inputs."
 authors = ["Moussa Mikhail <moussamikhail56@gmail.com>"]
 license = "MIT"
