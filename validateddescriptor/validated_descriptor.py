@@ -7,12 +7,12 @@ from types import UnionType
 
 from typing import Any, Callable, Generic, TypeVar
 
-ValidatorFunction = Callable[["ValidatedDescriptor", Any], None]
-
-# types acceptable
+# acceptable types
 IsInstanceable = type | UnionType | tuple[type | UnionType | tuple[Any, ...], ...]
 
 T = TypeVar("T")
+
+ValidatorFunction = Callable[["ValidatedDescriptor[T]", Any], None]
 
 
 class ValidatedDescriptor(Generic[T]):
@@ -25,8 +25,8 @@ class ValidatedDescriptor(Generic[T]):
 
     def __init__(
         self,
+        type_: IsInstanceable,
         validation_funcs: list[ValidatorFunction] | None = None,
-        type_: IsInstanceable = object,
     ):
 
         self.validation_funcs = validation_funcs or []
@@ -86,6 +86,14 @@ class ValidatedDescriptor(Generic[T]):
             print(err)
 
             raise err
+
+    @classmethod
+    def factory(cls, type_, validation_funcs: list[ValidatorFunction] | None = None):
+        """Factory function for creating ValidatedDescriptors.
+        The type of the returned descriptor can be inferred by mypy.
+        """
+
+        return ValidatedDescriptor[type_](type_, validation_funcs)  # type: ignore[valid-type]
 
 
 def value_check_factory(
