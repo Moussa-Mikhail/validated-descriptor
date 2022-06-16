@@ -87,14 +87,6 @@ class ValidatedDescriptor(Generic[T]):
 
             raise err
 
-    @classmethod
-    def factory(cls, type_, validation_funcs: list[ValidatorFunction] | None = None):
-        """Factory function for creating ValidatedDescriptors.
-        The type of the returned descriptor can be inferred by mypy.
-        """
-
-        return ValidatedDescriptor[type_](type_, validation_funcs)  # type: ignore[valid-type]
-
 
 def value_check_factory(
     check_func: Callable[[Any], bool], prop: str

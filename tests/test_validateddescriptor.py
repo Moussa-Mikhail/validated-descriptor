@@ -11,14 +11,14 @@ is_not_empty = value_check_factory(lambda x: x != "", "non-empty")
 @pytest.fixture
 def non_empty_str_desc():
 
-    return ValidatedDescriptor.factory(str, [is_not_empty])
+    return ValidatedDescriptor(str, [is_not_empty])
 
 
 class TestClass:
 
-    name = ValidatedDescriptor.factory(str, [is_not_empty])
+    name = ValidatedDescriptor[str](str, [is_not_empty])
 
-    age = ValidatedDescriptor.factory(float)
+    age = ValidatedDescriptor[float](float)
 
     def __init__(self, name: str, age: float):
 
@@ -35,7 +35,7 @@ def test_instance():
 
 def test_init():
 
-    str_desc = ValidatedDescriptor.factory(str)
+    str_desc = ValidatedDescriptor(str)
 
     assert str_desc.validation_funcs == []
 
@@ -46,7 +46,7 @@ def test_init_invalid():
 
     with pytest.raises(TypeError):
 
-        ValidatedDescriptor.factory(TypeVar("a"))
+        ValidatedDescriptor(TypeVar("a"))
 
 
 def test_init_with_validation_funcs(non_empty_str_desc):
