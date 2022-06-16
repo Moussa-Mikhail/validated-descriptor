@@ -1,1 +1,1 @@
-from .validated_descriptor import *
+from .validated_descriptor import ValidatedDescriptor, value_check_factory
