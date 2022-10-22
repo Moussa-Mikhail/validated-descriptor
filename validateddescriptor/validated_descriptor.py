@@ -75,17 +75,9 @@ class ValidatedDescriptor(Generic[T]):
 
     def __set__(self, obj, value):
 
-        try:
+        self.validate(value)
 
-            self.validate(value)
-
-            setattr(obj, self.private_name, value)
-
-        except (TypeError, ValueError) as err:
-
-            print(err)
-
-            raise err
+        setattr(obj, self.private_name, value)
 
 
 def value_check_factory(
